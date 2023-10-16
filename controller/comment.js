@@ -47,7 +47,6 @@ exports.pushComment = async function pushComment(req, res) {
     res.send(JsonGenerator.getData());
 }
 exports.delComment = async function delComment(req, res) {
-    let code;
     let [result, userid] = await user.isAuthJson(req, res);
     if (!result) return;
     const [type, data] = getParamsArray(req, ["type", "id"]);

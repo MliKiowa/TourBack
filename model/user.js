@@ -3,7 +3,7 @@ class userModel {
     async getUserInfoByID(id) {
         let result;
         try {
-            await Db.all('SELECT id,username,imgurl FROM user where id = ?', id).then((rows) => { result = rows; });
+            await Db.all('SELECT id,username,imgurl,auth FROM user where id = ?', id).then((rows) => { result = rows; });
         } catch {
             return [false, -1];
         }
@@ -42,20 +42,37 @@ class userModel {
         // 不需要安全化处理 不通过数据库
         let tokenGenerate = LoadModel("token");
         //解密两次有点浪费 已优化 不要质疑两次if
-        let id = tokenGenerate.validToken(token);
-        if (id <= 0) return [false, id];
-        return [true, id];
+        let ret = tokenGenerate.validToken(token);
+        let id = ret.id;
+        if (id <= 0) return [false, ret];
+        return [true, ret];
     }
     async isAuthJson(req, res) {
         // 自动接管验证失败的返回 续签token未完成
         let JsonGenerator = LoadModel("JsonGenerator");
-        const [result, id] = await this.isAuth(req);
+        const [result, ret] = await this.isAuth(req);
         if (!result) {
             JsonGenerator.setRes([{ "status": -3, message: "未登录或登录过期" }])
             res.send(JsonGenerator.getData());
-            return [false, id];
+            return [false, ret];
         }
-        return [true, id];
+        return [true, ret.id];
+    }
+    async isAuthJsonByGroup(req, res, group) {
+        // 自动接管验证失败的返回 续签token未完成
+        let JsonGenerator = LoadModel("JsonGenerator");
+        const [result, ret] = await this.isAuth(req);
+        if (!result) {
+            JsonGenerator.setRes([{ "status": -3, message: "未登录或登录过期" }])
+            res.send(JsonGenerator.getData());
+            return [false, -1];
+        }
+        if (Number(group) !== ret.auth) {
+            JsonGenerator.setRes([{ "status": -4, message: "你无权进行该操作" }])
+            res.send(JsonGenerator.getData());
+            return [false, ret];
+        }
+        return [true, ret];
     }
     async getCurrentId() {
         let result;
@@ -64,13 +81,12 @@ class userModel {
         } catch {
             return [false, -1];
         }
-
         return Object.values(result[0])[0];//一般是有的 除非没数据表
     }
-    async regUser(regId, username, password) {
+    async regUser(regId, username, password, auth) {
         let imgurl = null;//注册时设置默认头像地址
         try {
-            let result = await Db.run("INSERT INTO 'user' ('id' , 'username','password','imgurl') VALUES ( ?, ?, ?, ? )", [regId, username, password, imgurl]);
+            let result = await Db.run("INSERT INTO 'user' ('id' , 'username','password','imgurl', 'auth') VALUES ( ?, ?, ?, ?, ?)", [regId, username, password, imgurl, auth]);
             if (result.changes == 1) return [true, 200];
         } catch {
             return [false, -4];

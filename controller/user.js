@@ -41,14 +41,14 @@ exports.reg = async function regUser(req, res) {
         res.send(JsonGenerator.getData());
         return;
     }
-    const [_, code] = await user.regUser(regId, username, password);
+    const [_, code] = await user.regUser(regId, username, password,0);
     console.log(code);
     if (code < 0) {
         JsonGenerator.setRes([{ "status": code }, { data: { message: "账号注册失败,数据写入失败" } }]);
         res.send(JsonGenerator.getData());
         return;
     }
-    JsonGenerator.setRes([{ "status": 200 }, { data: { message: "账号注册成功", id: regId, username: username, token: tokenGenerate.generate(regId, 3600000) } }]);
+    JsonGenerator.setRes([{ "status": 200 }, { data: { message: "账号注册成功", id: regId, username: username, token: tokenGenerate.generate(regId, 0,3600000) } }]);
     // 注册赋予登录
     res.send(JsonGenerator.getData());
 }

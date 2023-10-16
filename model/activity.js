@@ -10,7 +10,7 @@ class activityModel {
     }
     async pushActivity(phone, name, price, location, desc, headimg) {
         try {
-            let result = await Db.run("INSERT INTO 'user' ('id' , 'phone','name','price','location','desc','headimg') VALUES ((SELECT MAX(id) FROM activity), ?, ?, ?, ?, ?, ? )", [phone, name, price, location, desc, headimg]);
+            let result = await Db.run("INSERT INTO 'activity' ('id' , 'phone','name','price','location','desc','headimg') VALUES ((SELECT MAX(id) FROM activity), ?, ?, ?, ?, ?, ? )", [phone, name, price, location, desc, headimg]);
             if (result.changes == 1) return [true, 200];
         } catch {
             return [false, -4];

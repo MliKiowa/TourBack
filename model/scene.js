@@ -21,5 +21,14 @@ class sceneModel {
         }
         return true;
     }
+    async getCurrentId() {
+        let result;
+        try {
+            await Db.all("SELECT MAX(id) FROM scene").then((rows) => { result = rows; });
+        } catch {
+            return [false, -1];
+        }
+        return Object.values(result[0])[0];//一般是有的 除非没数据表
+    }
 }
 module.exports = sceneModel;
