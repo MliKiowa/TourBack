@@ -1,7 +1,7 @@
 "use strict";
 //SELECT * FROM notice WHERE endtime <= date('now')
 class NoticeModel {
-    async getAll() {
+    async noticeGetAll() {
         let result;
         //未参数化 请后期防注入
         await Db.all("SEALECT * FROM notice WHERE endtime >= date('now')").then((rows) => { result = rows; })
@@ -10,14 +10,14 @@ class NoticeModel {
         }
         return result;
     }
-    async getById(id) {
+    async noticeGetByID(id) {
         let result;
         await Db.all("SELECT * FROM notice where id =?", [id]).then((rows) => { result = rows; })
         if (result.length == 0 || result.length > 1) return [false, -1];
         return [true, result[0]];
     }
     // 仅限管理员 现在权限部分未完成
-    async pushNotice(anthor, message, endtime) {
+    async noticePush(anthor, message, endtime) {
         try {
             let result = await Db.run("INSERT INTO 'activity' ('id' , 'anthor','message','endtime') VALUES ((SELECT MAX(id) FROM notice), ?, ?, ?, ? )", [anthor, message, endtime]);
             if (result.changes == 1) return [true, 200];

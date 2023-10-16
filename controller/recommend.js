@@ -3,8 +3,8 @@
 let JsonGenerator = LoadModel("JsonGenerator");
 exports.recommendScene = async function recommendScene(req, res) {
 
- }
- exports.recommendActivity = async function recommendActivity(req, res) {
+}
+exports.recommendActivity = async function recommendActivity(req, res) {
 
- }
-exports.router = { "recommendScene": exports.recommendScene };
+}
+exports.router = { "/recommendScene": exports.recommendScene, "/recommendActivity": exports.recommendActivity };

@@ -7,7 +7,6 @@ exports.getAll = async function getAll(req, res) {
     res.send(JsonGenerator.getData());
 }
 exports.love = async function love(req, res) {
-    // 功能未测试
     let scene = LoadModel("scene");
     let [result, _] = await user.isAuthJson(req, res);
     if (!result) return;

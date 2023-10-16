@@ -1,6 +1,6 @@
 "use strict";
 global.LoadModel = (ModelName, ...params) => { return new (require("../model/" + ModelName))(...params); };
-global.getParamsArray = (req, paramsName)=>  {
+global.getParamsArray = (req, paramsName) => {
     let key, ret = [];
     let arrayParams = { ...req.query, ...req.body, ...req.params };
     //合并所有可用参数

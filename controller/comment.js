@@ -28,7 +28,7 @@ exports.pushComment = async function pushComment(req, res) {
     const [type, id, content] = getParamsArray(req, ["type", "id", "content"]);
     // 验证权限 获取参数
     type = Number(type);
-    id = Number(id);
+    id = Number(id);//特指fromid 区别userid
     if (type !== type || id !== id || type < 0 || id < 0 || content == undefined || toString(content).length == 0) {
         //参数异常
         JsonGenerator.setRes([{ "status": -2 }, { data: { message: "请检查参数是否正确" } }]);
@@ -36,7 +36,7 @@ exports.pushComment = async function pushComment(req, res) {
         return;
     }
     // pushComment 写入数据
-    [result, code] = commentModel.pushComment();
+    [result, code] = commentModel.pushComment(userid, content, type, id);
     // 覆盖
     if (!result) {
         JsonGenerator.setRes([{ "status": code }, { data: { message: "数据写入失败" } }]);
@@ -69,4 +69,4 @@ exports.delComment = async function delComment(req, res) {
     JsonGenerator.setRes([{ "status": 200 }, { data: { message: "评论删除成功" } }]);
     res.send(JsonGenerator.getData());
 }
-exports.router = { "getCommentAll": exports.getCommentAll, "pushComment": exports.pushComment, "delComment": exports.delComment };
+exports.router = { "/getCommentAll": exports.getCommentAll, "/pushComment": exports.pushComment, "/delComment": exports.delComment };

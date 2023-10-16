@@ -1,12 +1,12 @@
 "use strict";
 class hotelModel {
-    async getAll() {
+    async hotelGetAll() {
         let result;
         await Db.all("SELECT * FROM hotel").then((rows) => { result = rows; })
         if (result == "undefined" || result.length == 0) return [];
         return result;
     }
-    async getById(id) {
+    async hotelGetById(id) {
         let result;
         await Db.all("SELECT * FROM hotel where id =?", [id]).then((rows) => { result = rows; })
         if (result.length == 0 || result.length > 1) return [false, -1];
@@ -24,7 +24,7 @@ class hotelModel {
         }
         return [true, 200]
     }
-    async order(userid, fromid) {
+    async orderSet(userid, fromid) {
         //添加到我的预定 fromid酒店id
         const [retresult, retdata] = this.orderIsCreat(userid);
         if (!retresult) return [false, -5];
