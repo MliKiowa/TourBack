@@ -11,13 +11,24 @@ exports.getCommentAll = async function getCommentAll(req, res) {
         res.send(JsonGenerator.getData());
         return;
     }
-    const [result, data] = commentModel.getList();
+    const [result, data] = commentModel.getCommentAll();
     if (!result) {
         JsonGenerator.setRes([{ "status": -3 }, { data: { message: "读取数据失败" } }]);
         res.send(JsonGenerator.getData());
         return;
     }
     JsonGenerator.setRes([{ "status": -3 }, { data: data }]);
+    res.send(JsonGenerator.getData());
+}
+exports.getCommentByID = async function getCommentByID(req, res) {
+    const [id] = getParamsArray(req, ["id"]);
+    id = Number(id);
+    if (id = undefined || id !== id || id == 0) {
+        JsonGenerator.setRes([{ "status": -1 }, { data: { message: "活动ID输入错误" } }])
+        res.send(JsonGenerator.getData());
+        return;
+    }
+    JsonGenerator.setRes([{ "status": 200, data: await commentModel.getCommentByID(id) }])
     res.send(JsonGenerator.getData());
 }
 exports.pushComment = async function pushComment(req, res) {
@@ -60,7 +71,7 @@ exports.delComment = async function delComment(req, res) {
         res.send(JsonGenerator.getData());
         return;
     }
-    [result, data] = commentModel.getByID().userid
+    [result, data] = commentModel.delComment(id);
     if (result || result.userid !== Number(userid)) {
         JsonGenerator.setRes([{ "status": -1 }, { data: { message: "评论写入失败或者你无权删除" } }]);
         res.send(JsonGenerator.getData());

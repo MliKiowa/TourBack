@@ -1,6 +1,6 @@
 "use strict";
 class commentModel {
-    async getList(type, fromid) {
+    async getCommentAll(type, fromid) {
         //type 0 活动 1 景区 2 酒店
         let result;
         await Db.all("SELECT * FROM comment where type = ? and fromid = ?", [type, fromid]).then((rows) => { result = rows; })
@@ -9,11 +9,11 @@ class commentModel {
         }
         return [true, result];
     }
-    async getByID(type, fromid, userid) {
+    async getCommentByID(id) {
         //type 0 活动 1 景区 2 酒店
         let result;
         try {
-            await Db.all("SELECT * FROM comment where type = ? and fromid = ? and userid = ?", [type, fromid, userid]).then((rows) => { result = rows; })
+            await Db.all("SELECT * FROM comment where id = ? ", id).then((rows) => { result = rows; })
         } catch {
             return [false, -1];
         }
@@ -57,6 +57,11 @@ class commentModel {
                 return [false, -101];
             }
         } catch { return [true, 105]; }
+        return [true, 200];
+    }
+    async delCommentByID(id) {
+        let result = await Db.run("DELETE FROM 'comment' WHERE id = ?", id);
+        if (result.change !== 1) return [false, -101];
         return [true, 200];
     }
 }

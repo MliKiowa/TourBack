@@ -17,7 +17,7 @@ exports.love = async function love(req, res) {
         res.send(JsonGenerator.getData());
         return;
     }
-    if (!scene(id)) {
+    if (!scene.love(id)) {
         JsonGenerator.setRes([{ "status": -2 }, { data: { message: "数据写入异常" } }])
         res.send(JsonGenerator.getData());
         return;

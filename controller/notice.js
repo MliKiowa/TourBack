@@ -7,6 +7,17 @@ exports.noticeGetAll = async function noticeGetAll(req, res) {
     JsonGenerator.setRes([{ "status": 200, data: await notice.noticeGetAll() }])
     res.send(JsonGenerator.getData());
 }
+exports.noticeGetByID = async function noticeGetByID(req, res) {
+    const [id] = getParamsArray(req, ["id"]);
+    id = Number(id);
+    if (id = undefined || id !== id || id == 0) {
+        JsonGenerator.setRes([{ "status": -1 }, { data: { message: "活动ID输入错误" } }])
+        res.send(JsonGenerator.getData());
+        return;
+    }
+    JsonGenerator.setRes([{ "status": 200, data: await notice.noticeGetByID(id) }])
+    res.send(JsonGenerator.getData());
+}
 exports.noticePush = async function noticePush(req, res) {
     let [result, ret] = await user.isAuthJsonByGroup(req, res, 1);
     if (!result) return;

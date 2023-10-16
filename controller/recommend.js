@@ -1,10 +1,13 @@
 "use strict";
 //推荐信息
 let JsonGenerator = LoadModel("JsonGenerator");
-exports.recommendScene = async function recommendScene(req, res) {
-
+let recommend = LoadModel("recommend");
+exports.recommendSceneGetAll = async function recommendScene(req, res) {
+    JsonGenerator.setRes([{ "status": 200 }, { data: await recommend.recommendSceneGetAll() }])
+    res.send(JsonGenerator.getData());
 }
-exports.recommendActivity = async function recommendActivity(req, res) {
-
+exports.recommendActivityGetAll = async function recommendActivity(req, res) {
+    JsonGenerator.setRes([{ "status": 200 }, { data: await recommend.recommendActivity() }])
+    res.send(JsonGenerator.getData());
 }
-exports.router = { "/recommendScene": exports.recommendScene, "/recommendActivity": exports.recommendActivity };
+exports.router = { "/recommendSceneGetAll": exports.recommendSceneGetAll, "/recommendActivityGetAll": exports.recommendActivityGetAll };
