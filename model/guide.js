@@ -46,4 +46,4 @@ class guideModel {
         return [true, 200];
     }
 }
-module.exports = commentModel;
+module.exports = guideModel;

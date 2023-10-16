@@ -20,18 +20,21 @@ class TokenManger {
         src += cipher.final("utf8");
         return src;
     }
-    generate(userid, auth, time) {
+    generate(userid, time, authkey) {
         // 生成时间
         let endtime = Date.now() + time;
-        let data = Buffer.from(JSON.stringify({ ver: 1, id: userid, auth: auth, retime: endtime })).toString("base64");
+        let data = Buffer.from(JSON.stringify({ ver: 1, id: userid, auth: authkey, retime: endtime })).toString("base64");
+        console.log(JSON.stringify({ ver: 1, id: userid, auth: authkey, retime: endtime }));
         // json 编码原文 接下来按标准情况加密
         return this.encode(data, this.key, this.iv);;
     }
     validToken(token) {
         // 验证Token
         //解出原文
+        let jsontext;
         try {
-            let jsontext = JSON.parse(Buffer.from(this.decode(token, this.key, this.iv), "base64").toString("utf8"));
+            jsontext = JSON.parse(Buffer.from(this.decode(token, this.key, this.iv), "base64").toString("utf8"));
+            console.log(Buffer.from(this.decode(token, this.key, this.iv), "base64").toString("utf8"));
             if (Date.now() > jsontext.retime) {
                 // 超过时间有效期 允许续期
                 return -4;

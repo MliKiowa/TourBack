@@ -13,7 +13,7 @@ exports.pushActivity = async function pushActivity(req, res) {
     let [result, ret] = await user.isAuthJsonByGroup(req, res, 1);
     if (!result) return;
 
-    let data = getParamsArray(req, ["phone", "name", "price", "location", "desc", "headimg"]);
+    let data = getParamsArray(req, ["phone", "name", "price", "location", "desc", "headimg", "endtime"]);
     // 以下处理参数
     for (var key in data) {
         if (data[key] == undefined || toString(data[key]).length == 0) {
@@ -22,7 +22,7 @@ exports.pushActivity = async function pushActivity(req, res) {
             return;
         }
     }
-    const [retresult, retdata] = activity.pushActivity(...data);
+    const [retresult, retdata] = await activity.pushActivity(data[0], data[1], data[2], data[3], data[4], data[5], data[6]);
     if (!retresult) {
         JsonGenerator.setRes([{ "status": retdata }, { data: { message: "数据写入失败" } }]);
         res.send(JsonGenerator.getData());

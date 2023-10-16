@@ -67,5 +67,5 @@ exports.delGuide = async function delGuide(req, res) {
     JsonGenerator.setRes([{ "status": 200 }, { data: { message: "评论删除成功" } }]);
     res.send(JsonGenerator.getData());
 }
-exports.router = { "/getGuideAll": exports.getCommentAll, "/pushGuide": exports.pushComment, "/delGuide": exports.delComment };
+exports.router = { "/getGuideAll": exports.getGuideAll, "/pushGuide": exports.pushGuide, "/delGuide": exports.delGuide };
 // 攻略获取 从数据中获取

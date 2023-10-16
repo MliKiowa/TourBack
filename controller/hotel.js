@@ -47,4 +47,4 @@ exports.orderGet = async function orderSet(req, res) {
     JsonGenerator.setRes([{ "status": 200, data: await hotel.orderGet(userid) }])
     res.send(JsonGenerator.getData());
 }
-exports.router = { "/hotelGetAll": exports.hotelGetAll, "/orderSet": exports.orderSet, "/orderCancel": orderCancel, "/orderGet": exports.orderGet };
+exports.router = { "/hotelGetAll": exports.hotelGetAll, "/orderSet": exports.orderSet, "/orderCancel": exports.orderCancel, "/orderGet": exports.orderGet };

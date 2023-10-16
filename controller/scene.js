@@ -6,7 +6,7 @@ exports.getAll = async function getAll(req, res) {
     JsonGenerator.setRes([{ "status": 200, data: await scene.getList() }])
     res.send(JsonGenerator.getData());
 }
-exports.love = async function love(req, res) {
+exports.sceneLove = async function sceneLove(req, res) {
     let scene = LoadModel("scene");
     let [result, _] = await user.isAuthJson(req, res);
     if (!result) return;
@@ -25,4 +25,4 @@ exports.love = async function love(req, res) {
     JsonGenerator.setRes([{ "status": 200 }, { message: "点赞成功" }])
     res.send(JsonGenerator.getData());
 }
-exports.router = { "/sceneGetAll": exports.getAll };
+exports.router = { "/sceneGetAll": exports.getAll,"/sceneLove": exports.sceneLove };

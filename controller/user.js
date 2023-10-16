@@ -14,9 +14,10 @@ exports.login = async function login(req, res) {
         JsonGenerator.setRes([{ "status": -1 }, { data: { message: "请检查账号或密码是否错误" } }]);
     } else {
         //3600000 = 1H
-        JsonGenerator.setRes([{ "status": 200 }, { data: [{ message: "登录成功", token: tokenGenerate.generate(Number(id), 3600000) }] }]);
+        JsonGenerator.setRes([{ "status": 200 }, { data: [{ message: "登录成功", token: tokenGenerate.generate(Number(id), 3600000, user.getUserInfoByID(id).auth) }] }]);
     }
     res.send(JsonGenerator.getData());
+
 }
 exports.info = async function info(req, res) {
     // 已优化版本
@@ -48,7 +49,7 @@ exports.reg = async function regUser(req, res) {
         res.send(JsonGenerator.getData());
         return;
     }
-    JsonGenerator.setRes([{ "status": 200 }, { data: { message: "账号注册成功", id: regId, username: username, token: tokenGenerate.generate(regId, 0, 3600000) } }]);
+    JsonGenerator.setRes([{ "status": 200 }, { data: { message: "账号注册成功", id: regId, username: username, token: tokenGenerate.generate(regId, 3600000, 0) } }]);
     // 注册赋予登录
     res.send(JsonGenerator.getData());
 }
