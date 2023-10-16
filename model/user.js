@@ -10,6 +10,25 @@ class userModel {
         if (result.length == 0 || result.length > 1) return [false, -1];
         return [true, result[0]];
     }
+    async isExistUsername(username) {
+        let result;
+        try {
+            await Db.all('SELECT id,username,imgurl FROM user where username = ?', username).then((rows) => { result = rows; });
+        } catch {
+            return [false, -1];
+        }
+        if (result.length == 0) return [true, 200];
+        return [false, -1];
+    }
+    async getUserAuthByname(id, password) {
+        //未修改
+        let result;
+
+        await Db.all('SELECT * FROM user where id = ? and password = ?', [Number(id), password]).then((rows) => { result = rows; });
+        console.log(password);
+        if (result == "undefined" || result.length == 0 || result.length > 1) return false;
+        return true;
+    }
     async getUserAuth(id, password) {
         let result;
 

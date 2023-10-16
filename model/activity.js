@@ -8,11 +8,25 @@ class activityModel {
         }
         return result;
     }
-    async getById(id) {
+    async pushActivity(phone, name, price, location, desc, headimg) {
+        try {
+            let result = await Db.run("INSERT INTO 'user' ('id' , 'phone','name','price','location','desc','headimg') VALUES ((SELECT MAX(id) FROM activity), ?, ?, ?, ?, ?, ? )", [phone, name, price, location, desc, headimg]);
+            if (result.changes == 1) return [true, 200];
+        } catch {
+            return [false, -4];
+        }
+        return [false, -5];
+    }
+    async getCurrentId() {
         let result;
-        await Db.all("SELECT * FROM activity where id =?", [id]).then((rows) => { result = rows; })
-        if (result.length == 0 || result.length > 1) return [false, -1];
-        return [true, result[0]];
+        try {
+            await Db.all("SELECT MAX(id) FROM activity").then((rows) => { result = rows; });
+        } catch {
+            return [false, -1];
+        }
+
+        return Object.values(result[0])[0];//一般是有的 除非没数据表
     }
 }
+
 module.exports = activityModel;

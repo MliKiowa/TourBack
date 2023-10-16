@@ -9,6 +9,17 @@ class commentModel {
         }
         return [true, result];
     }
+    async getByID(type, fromid, userid) {
+        //type 0 活动 1 景区 2 酒店
+        let result;
+        try {
+            await Db.all("SELECT * FROM comment where type = ? and fromid = ? and userid = ?", [type, fromid, userid]).then((rows) => { result = rows; })
+        } catch {
+            return [false, -1];
+        }
+        if (result.length == 0 || result.length > 1) return [false, -1];
+        return [true, result[0]];
+    }
     async getCurrentId() {
         let result;
         //一般都有
