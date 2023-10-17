@@ -18,11 +18,12 @@ class NoticeModel {
     }
     // 仅限管理员 现在权限部分未完成
     async noticePush(anthor, message, endtime) {
+        let result;
         try {
-            let result = await Db.run("INSERT INTO 'activity' ('id' , 'anthor','message','endtime') VALUES ((SELECT MAX(id) FROM notice), ?, ?, ?, ? )", [anthor, message, endtime]);
+            result = await Db.run("INSERT INTO 'notice' ('id' , 'anthor','message','endtime') VALUES ((SELECT MAX(id) FROM notice)+1, ?, ?, ? )", [anthor, message, endtime]);
             if (result.changes == 1) return [true, 200];
         } catch {
-            return [false, -4];
+            return [false, -101];
         }
         return [false, -5];
     }

@@ -7,7 +7,7 @@ exports.recommendSceneGetAll = async function recommendScene(req, res) {
     res.send(JsonGenerator.getData());
 }
 exports.recommendActivityGetAll = async function recommendActivity(req, res) {
-    JsonGenerator.setRes([{ "status": 200 }, { data: await recommend.recommendActivity() }])
+    JsonGenerator.setRes([{ "status": 200 }, { data: await recommend.recommendActivityGetAll() }])
     res.send(JsonGenerator.getData());
 }
 exports.router = { "/recommendSceneGetAll": exports.recommendSceneGetAll, "/recommendActivityGetAll": exports.recommendActivityGetAll };

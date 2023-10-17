@@ -14,7 +14,13 @@ exports.login = async function login(req, res) {
         JsonGenerator.setRes([{ "status": -1 }, { data: { message: "请检查账号或密码是否错误" } }]);
     } else {
         //3600000 = 1H
-        JsonGenerator.setRes([{ "status": 200 }, { data: [{ message: "登录成功", token: tokenGenerate.generate(Number(id), 3600000, user.getUserInfoByID(id).auth) }] }]);
+        let userInfo = await user.getUserInfoByID(id);
+       // console.log(await user.getUserInfoByID(id));
+        if(userInfo[0]){
+            JsonGenerator.setRes([{ "status": 200 }, { data: [{ message: "登录成功", token: tokenGenerate.generate(Number(id), 3600000, userInfo[1].auth) }] }]);
+        }else{
+            JsonGenerator.setRes([{ "status": -1 }, { data: { message: "数据库缺少用户信息" } }]);
+        }
     }
     res.send(JsonGenerator.getData());
 
@@ -23,8 +29,8 @@ exports.info = async function info(req, res) {
     // 已优化版本
     let [result, id] = await user.isAuthJson(req, res);
     if (!result) return;
-    let jsondata = await user.getUserInfoByID(id);
-    JsonGenerator.setRes([{ "status": (jsondata == 'undefined' ? -1 : 200) }, { result: jsondata }]);
+    let [ret,jsondata] = await user.getUserInfoByID(id);
+    JsonGenerator.setRes([{ "status": (jsondata == 'undefined' ? ret : 200) , jsondata }]);
     res.send(JsonGenerator.getData());
 }
 exports.reg = async function regUser(req, res) {

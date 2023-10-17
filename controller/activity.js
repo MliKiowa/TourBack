@@ -1,6 +1,6 @@
 "use strict";
 let JsonGenerator = LoadModel("JsonGenerator");
-let user = LoadModel("user");
+let userModel = LoadModel("user");
 let activity = LoadModel("activity");
 exports.activityGetAll = async function activityGetAll(req, res) {
     //无需鉴权
@@ -10,7 +10,7 @@ exports.activityGetAll = async function activityGetAll(req, res) {
 exports.pushActivity = async function pushActivity(req, res) {
     // 创建活动 
     // 验证权限
-    let [result, ret] = await user.isAuthJsonByGroup(req, res, 1);
+    let [result, ret] = await userModel.isAuthJsonByGroup(req, res, 1);
     if (!result) return;
 
     let data = getParamsArray(req, ["phone", "name", "price", "location", "desc", "headimg", "endtime"]);

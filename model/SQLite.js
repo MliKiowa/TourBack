@@ -35,6 +35,7 @@ class SQLite {
 
   // 执行 sql 语句的方法，接收 sql 和 params 作为参数
   run(sql, params = []) {
+    console.log(sql);
     return new Promise((resolve, reject) => {
       this.db.run(sql, params, function (err) {
         if (err) {
@@ -49,10 +50,10 @@ class SQLite {
   // 查询所有数据的方法，接收 sql 和 params 作为参数
   all(sql, params = []) {
     // 返回一个 promise 对象
+    console.log(sql);
     return new Promise((resolve, reject) => {
       // 调用数据库对象的 all 方法
       this.db.all(sql, params, (err, rows) => {
-        console.log(sql);
         if (err) {
           // 如果出错，调用 reject 函数
           reject(err.message);

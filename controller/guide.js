@@ -1,7 +1,8 @@
 let JsonGenerator = LoadModel("JsonGenerator");
 let guide = LoadModel("guide");
+let userModel = LoadModel("user");
 exports.getGuideAll = async function getGuideAll(req, res) {
-    const [id] = getParamsArray(req, ["id"]);
+    let [id] = getParamsArray(req, ["id"]);
     id = Number(id);
     if (id !== id || id < 0) {
         //参数异常
@@ -9,7 +10,7 @@ exports.getGuideAll = async function getGuideAll(req, res) {
         res.send(JsonGenerator.getData());
         return;
     }
-    const [result, data] = guide.getGuideAll();
+    let [result, data] =  await guide.getGuideAll();
     if (!result) {
         JsonGenerator.setRes([{ "status": -3 }, { data: { message: "读取数据失败" } }]);
         res.send(JsonGenerator.getData());
@@ -19,10 +20,9 @@ exports.getGuideAll = async function getGuideAll(req, res) {
     res.send(JsonGenerator.getData());
 }
 exports.pushGuide = async function pushGuide(req, res) {
-    let [result, userid] = await user.isAuthJson(req, res);
+    let [result, userid] = await userModel.isAuthJson(req, res);
     if (!result) return;
     let data;
-
     const [type, id, content] = getParamsArray(req, ["type", "id", "content"]);
     // 验证权限 获取参数
     type = Number(type);
@@ -64,7 +64,7 @@ exports.delGuide = async function delGuide(req, res) {
         res.send(JsonGenerator.getData());
         return;
     }
-    JsonGenerator.setRes([{ "status": 200 }, { data: { message: "评论删除成功" } }]);
+    JsonGenerator.setRes([{ "status": 200 }, { data: { message: "攻略删除成功" } }]);
     res.send(JsonGenerator.getData());
 }
 exports.router = { "/getGuideAll": exports.getGuideAll, "/pushGuide": exports.pushGuide, "/delGuide": exports.delGuide };

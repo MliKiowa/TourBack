@@ -3,7 +3,7 @@ class guideModel {
     async getGuideAll() {
         let result;
         await Db.all("SELECT * FROM guide",).then((rows) => { result = rows; })
-        if (result == "undefined" || result.length == 0) {
+        if (result == undefined|| result.length == 0) {
             return [false, []];
         }
         return [true, result];

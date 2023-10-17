@@ -13,7 +13,12 @@ global.getParamsArray = (req, paramsName) => {
         }
     }
     return ret;
-}
+};
+global.setParam = (req, key, value) => {
+    req.query[key] = req.query[key] !== undefined ? undefined : value;
+    req.body[key] = req.body[key] !== undefined ? undefined : value;
+    req.params[key] = req.params[key] !== undefined ? undefined : value;
+};
 Date.prototype.Format = function (fmt) {
     var o = {
         'M+': this.getMonth() + 1,
