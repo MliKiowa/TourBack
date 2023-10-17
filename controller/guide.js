@@ -2,14 +2,6 @@ let JsonGenerator = LoadModel("JsonGenerator");
 let guide = LoadModel("guide");
 let userModel = LoadModel("user");
 exports.guideGetAll = async function guideGetAll(req, res) {
-    let [id] = getParamsArray(req, ["id"]);
-    id = Number(id);
-    if (id !== id || id < 1) {
-        //参数异常
-        JsonGenerator.setRes([{ "status": -2 }, { data: { message: "请检查参数是否正确" } }]);
-        res.send(JsonGenerator.getData());
-        return;
-    }
     let [result, data] = await guide.getGuideAll();
     if (!result) {
         JsonGenerator.setRes([{ "status": -3 }, { data: { message: "读取数据失败" } }]);

@@ -52,6 +52,7 @@ class userModel {
         let tokenGenerate = LoadModel("token");
         //解密两次有点浪费 已优化 不要质疑两次if
         let ret = tokenGenerate.validToken(token);
+        console.log("isAuth", ret);
         let id = ret.id;
         if (ret <= 0) return [false, ret];
         return [true, ret];
