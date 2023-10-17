@@ -20,7 +20,7 @@ class userModel {
         if (result.length == 0) return [true, 200];
         return [false, -1];
     }
-    async getUserAuthByname(id, password) {
+    async getUserAuthByName(id, password) {
         //未修改
         let result;
 

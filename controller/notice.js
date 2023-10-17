@@ -47,4 +47,4 @@ exports.noticePush = async function noticePush(req, res) {
     JsonGenerator.setRes([{ "status": 200 }, { data: { message: "公告添加成功" } }]);
     res.send(JsonGenerator.getData());
 }
-exports.router = { "/noticeGetAll": exports.noticePush, "/getGuideByID": exports.noticeGetByID, "/noticePush": exports.noticePush };
+exports.router = { "/noticeGetAll": exports.noticeGetAll, "/noticeGetByID": exports.noticeGetByID, "/noticePush": exports.noticePush };

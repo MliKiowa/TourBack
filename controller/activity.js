@@ -7,7 +7,7 @@ exports.activityGetAll = async function activityGetAll(req, res) {
     JsonGenerator.setRes([{ "status": 200 }, { data: await activity.getAll() }])
     res.send(JsonGenerator.getData());
 }
-exports.pushActivity = async function pushActivity(req, res) {
+exports.activityPush = async function activityPush(req, res) {
     // 创建活动 
     // 验证权限
     let [result, ret] = await userModel.isAuthJsonByGroup(req, res, 1);
@@ -31,4 +31,4 @@ exports.pushActivity = async function pushActivity(req, res) {
     JsonGenerator.setRes([{ "status": 200 }, { data: { message: "活动添加成功" } }]);
     res.send(JsonGenerator.getData());
 }
-exports.router = { "/activityGetAll": exports.activityGetAll, "/pushActivity": exports.pushActivity };
+exports.router = { "/activityGetAll": exports.activityGetAll, "/activityPush": exports.activityPush };

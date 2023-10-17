@@ -2,7 +2,7 @@
 let JsonGenerator = LoadModel("JsonGenerator");
 let commentModel = LoadModel("comment");
 let userModel = LoadModel("user");
-exports.getCommentAll = async function getCommentAll(req, res) {
+exports.commentGetAll = async function commentGetAll(req, res) {
     let [type, id] = getParamsArray(req, ["type", "id"]);
     type = Number(type);
     let fromid = Number(id);
@@ -21,7 +21,7 @@ exports.getCommentAll = async function getCommentAll(req, res) {
     JsonGenerator.setRes([{ "status": -3 }, { data: data }]);
     res.send(JsonGenerator.getData());
 }
-exports.getCommentByID = async function getCommentByID(req, res) {
+exports.commentGetByID = async function commentGetByID(req, res) {
     let [id] = getParamsArray(req, ["id"]);
     id = Number(id);
     if (id == undefined || id !== id || id == 0) {
@@ -34,7 +34,7 @@ exports.getCommentByID = async function getCommentByID(req, res) {
     JsonGenerator.setRes([{ "status": 200, data: data }])
     res.send(JsonGenerator.getData());
 }
-exports.pushComment = async function pushComment(req, res) {
+exports.commentPush = async function commentPush(req, res) {
     let [result, userid] = await userModel.isAuthJson(req, res);
     if (!result) return;
     let data;
@@ -60,7 +60,7 @@ exports.pushComment = async function pushComment(req, res) {
     JsonGenerator.setRes([{ "status": 200 }, { data: { message: "评论成功" } }]);
     res.send(JsonGenerator.getData());
 }
-exports.delComment = async function delComment(req, res) {
+exports.commentDel = async function commentDel(req, res) {
     //管理员删除判断未完成
     let [result, userid] = await userModel.isAuthJson(req, res);
     if (!result) return;
@@ -95,4 +95,4 @@ exports.delComment = async function delComment(req, res) {
     JsonGenerator.setRes([{ "status": 200 }, { data: { message: "评论删除成功" } }]);
     res.send(JsonGenerator.getData());
 }
-exports.router = { "/getCommentAll": exports.getCommentAll, "/getCommentByID": exports.getCommentByID, "/pushComment": exports.pushComment, "/delComment": exports.delComment };
+exports.router = { "/commentGetAll": exports.commentGetAll, "/commentGetByID": exports.commentGetByID, "/commentPush": exports.commentPush, "/commentDel": exports.commentDel };
