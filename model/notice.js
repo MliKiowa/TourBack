@@ -37,5 +37,15 @@ class NoticeModel {
 
         return Object.values(result[0])[0];//一般是有的 除非没数据表
     }
+    async noticePush(anthor, message, endtime) {
+        let result;
+        try {
+            result = await Db.run("INSERT INTO 'notice' ('id' , 'anthor','message','endtime') VALUES ((SELECT MAX(id) FROM notice)+1, ?, ?, ? )", [anthor, message, endtime]);
+            if (result.changes == 1) return [true, 200];
+        } catch {
+            return [false, -101];
+        }
+        return [false, -5];
+    }
 }
 module.exports = NoticeModel;

@@ -47,7 +47,7 @@ exports.orderGet = async function orderSet(req, res) {
     if (!result) return;
     //权限验证完成
     let [ret, data] = await hotel.orderGet(userid);
-    if(!ret){
+    if (!ret) {
         JsonGenerator.setRes([{ "status": -3 }, { data: { message: "数据写入失败" } }]);
         res.send(JsonGenerator.getData());
         return;

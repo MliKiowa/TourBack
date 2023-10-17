@@ -1,9 +1,20 @@
 "use strict";
 class userModel {
     async getUserInfoByID(id) {
+        console.log("埋点-2", id);
         let result;
         try {
             await Db.all('SELECT id,username,imgurl,auth FROM user where id = ?', id).then((rows) => { result = rows; });
+        } catch {
+            return [false, -1];
+        }
+        if (result.length == 0 || result.length > 1) return [false, -1];
+        return [true, result[0]];
+    }
+    async getUserInfoByName(username) {
+        let result;
+        try {
+            await Db.all('SELECT id,username,imgurl,auth FROM user where username = ?', username).then((rows) => { result = rows; });
         } catch {
             return [false, -1];
         }
@@ -15,18 +26,16 @@ class userModel {
         try {
             await Db.all('SELECT id,username,imgurl,auth FROM user where username = ?', username).then((rows) => { result = rows; });
         } catch {
-            return [false, -1];
+            return false;
         }
-        if (result.length == 0) return [true, 200];
-        return [false, -1];
+        if (result.length == 0) return true;
+        return false;
     }
-    async getUserAuthByName(id, password) {
+    async getUserAuthByName(username, password) {
         //未修改
         let result;
-
-        await Db.all('SELECT * FROM user where id = ? and password = ?', [Number(id), password]).then((rows) => { result = rows; });
-        console.log(password);
-        if (result == "undefined" || result.length == 0 || result.length > 1) return false;
+        await Db.all('SELECT * FROM user where username = ? and password = ?', [username, password]).then((rows) => { result = rows; });
+        if (result == "undefined" || result.length == 0 || result.length > 1) return false; //同名情况返回失败 一般不同
         return true;
     }
     async getUserAuth(id, password) {
@@ -126,6 +135,9 @@ class userModel {
         return Object.values(result[0])[0];//一般是有的 除非没数据表
     }
     async regUser(regId, username, password, auth) {
+        if (isExistUsername(username)) {
+            return [false, -77];
+        }
         let imgurl = null;//注册时设置默认头像地址
         try {
             let result = await Db.run("INSERT INTO 'user' ('id' , 'username','password','imgurl', 'auth') VALUES ( ?, ?, ?, ?, ?)", [regId, username, password, imgurl, auth]);
