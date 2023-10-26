@@ -6,4 +6,4 @@ let autoload = require("./autoload");
 autoload(routes,path.join(ProjectPath, "controller"));
 //API Routers 自动加载
 
-module.exports = routes
+module.exports = routes;

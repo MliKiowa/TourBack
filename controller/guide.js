@@ -48,7 +48,7 @@ exports.guidePush = async function guidePush(req, res) {
         res.send(JsonGenerator.getData());
         return;
     }
-    JsonGenerator.setRes([{ "status": -3 }, { data: { message: "攻略提交成功" } }]);
+    JsonGenerator.setRes([{ "status": 200 }, { data: { message: "攻略提交成功" } }]);
     res.send(JsonGenerator.getData());
 }
 exports.guideDel = async function guideDel(req, res) {

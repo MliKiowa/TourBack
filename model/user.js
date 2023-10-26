@@ -53,7 +53,7 @@ class userModel {
         //解密两次有点浪费 已优化 不要质疑两次if
         let ret = tokenGenerate.validToken(token);
         console.log("isAuth", ret);
-        let id = ret.id;
+        //let id = ret.id;
         if (ret <= 0) return [false, ret];
         return [true, ret];
     }
@@ -75,7 +75,8 @@ class userModel {
         if (!result) {
             if (ret == -4) {
                 //刷新token
-                console.log("token刷新");
+                console.log("token需要刷新");
+                /*
                 let refreshtoken = tokenGenerate.refresh(token, 3600000);
                 JsonGenerator.addNode("data", { message: "token已刷新", "token": refreshtoken });
                 JsonGenerator.addNode("status", -200);//刷新token
@@ -83,8 +84,11 @@ class userModel {
                 [result, ret] = await this.isAuth(req); //重新赋值
                 console.log(JsonGenerator.getData());
                 res.send(JsonGenerator.getData());
-                return [false, ret];
-                //防止后面程序读到旧的token
+                */
+                JsonGenerator.addNode("data", { message: "token已过期", });
+                JsonGenerator.addNode("status", -200);//刷新token
+                res.send(JsonGenerator.getData());
+                return [false, -200];
             } else {
                 JsonGenerator.setRes([{ "status": -3, message: "未登录或登录过期" }])
                 res.send(JsonGenerator.getData());
@@ -102,6 +106,7 @@ class userModel {
         if (!result) {
             if (ret == -4) {
                 //刷新token
+                /*
                 console.log("token刷新");
                 let refreshtoken = tokenGenerate.refresh(token, 3600000);
                 JsonGenerator.addNode("data", { message: "token已刷新", "token": refreshtoken });
@@ -109,7 +114,11 @@ class userModel {
                 setParam(req, "token", refreshtoken); // 彻底方法
                 [result, ret] = await this.isAuth(req); //重新赋值
                 res.send(JsonGenerator.getData());
-                return [false, ret];
+                */
+                JsonGenerator.addNode("data", { message: "token已过期", });
+                JsonGenerator.addNode("status", -200);//刷新token
+                res.send(JsonGenerator.getData());
+                return [false, -200];
                 //防止后面程序读到旧的token
             } else {
                 console.log("验证", result, ret);
